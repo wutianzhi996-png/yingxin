@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
       allowedOrigins: ['localhost:3000', '*.vercel.app'],
     },
   },
+  trailingSlash: false,
 };
 
 export default nextConfig;
