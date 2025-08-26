@@ -4,13 +4,17 @@ import { useState, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Camera, Upload, User, ArrowRight, ArrowLeft } from 'lucide-react'
 import { useStepStore } from '@/lib/store/step-store'
+import { useAuthContext } from '@/components/providers/auth-provider'
+import { supabase } from '@/lib/supabase/supabase'
 import { isValidImageFile, compressImage } from '@/lib/utils'
 import Webcam from 'react-webcam'
 
 export function InfoCollectionStep() {
   const { stepData, updateStepData, nextStep, prevStep, isStepValid } = useStepStore()
+  const { user } = useAuthContext()
   const [showCamera, setShowCamera] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const webcamRef = useRef<Webcam>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -54,9 +58,89 @@ export function InfoCollectionStep() {
     }
   }
 
-  const handleNext = () => {
+  // 上传头像到Supabase存储
+  const uploadAvatarToSupabase = async (file: File): Promise<string | null> => {
+    if (!user) return null
+
+    try {
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${user.id}/avatar_${Date.now()}.${fileExt}`
+      
+      const { data, error } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: true
+        })
+
+      if (error) {
+        console.error('头像上传失败:', error)
+        return null
+      }
+
+      // 获取公共URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName)
+
+      return publicUrl
+    } catch (error) {
+      console.error('头像上传过程中出错:', error)
+      return null
+    }
+  }
+
+  // 保存用户基础信息到数据库
+  const saveUserProfile = async () => {
+    if (!user) return false
+
+    setIsSaving(true)
+    try {
+      let avatarUrl = null
+
+      // 如果有照片，上传到Supabase
+      if (stepData.photo && stepData.photo instanceof File) {
+        avatarUrl = await uploadAvatarToSupabase(stepData.photo)
+        if (!avatarUrl) {
+          throw new Error('头像上传失败')
+        }
+      }
+
+      // 保存用户资料到数据库
+      const { error } = await supabase
+        .from('student_profiles')
+        .upsert({
+          user_id: user.id,
+          name: stepData.name || '',
+          gender: stepData.gender || null,
+          phone: stepData.phone || '',
+          student_id: stepData.studentId || '',
+          photo_url: avatarUrl,
+          updated_at: new Date().toISOString()
+        })
+
+      if (error) {
+        console.error('保存用户资料失败:', error)
+        throw error
+      }
+
+      return true
+    } catch (error) {
+      console.error('保存用户资料过程中出错:', error)
+      alert('保存失败，请重试')
+      return false
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const handleNext = async () => {
     if (isStepValid(2)) {
-      nextStep()
+      // 保存数据到Supabase
+      const success = await saveUserProfile()
+      if (success) {
+        nextStep()
+      }
     }
   }
 
@@ -222,11 +306,20 @@ export function InfoCollectionStep() {
 
             <button
               onClick={handleNext}
-              disabled={!isStepValid(2)}
+              disabled={!isStepValid(2) || isSaving}
               className="flex items-center px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              下一步
-              <ArrowRight className="w-4 h-4 ml-2" />
+              {isSaving ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  保存中...
+                </>
+              ) : (
+                <>
+                  下一步
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </>
+              )}
             </button>
           </div>
         </div>

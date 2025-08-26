@@ -31,16 +31,16 @@ export function AIProcessingStep() {
 
   const processUserData = async () => {
     try {
-      // 步骤 1: 保存学生档案
+      // 步骤 1: 更新学生档案
       setCurrentStep(1)
-      setStatusText('保存学生信息...')
-      await saveStudentProfile()
+      setStatusText('更新学生信息...')
+      await updateStudentProfile()
       await updateProgress(25)
 
-      // 步骤 2: 上传照片
+      // 步骤 2: 获取照片信息
       setCurrentStep(2)
-      setStatusText('上传照片...')
-      const photoUrl = await uploadPhoto()
+      setStatusText('准备照片信息...')
+      const photoUrl = await getPhotoUrl()
       await updateProgress(50)
 
       // 步骤 3: 调用AI分析
@@ -80,60 +80,44 @@ export function AIProcessingStep() {
     })
   }
 
-  const saveStudentProfile = async () => {
+  const updateStudentProfile = async () => {
     if (!user) throw new Error('No user found')
 
+    // 更新现有的学生档案，添加职业规划和评估数据
     const { error } = await supabase
       .from('student_profiles')
-      .upsert({
-        user_id: user.id,
-        name: stepData.name || '',
-        student_id: stepData.studentId,
-        phone: stepData.phone,
-        gender: stepData.gender,
+      .update({
         ideal_career: stepData.idealCareer,
         career_custom: stepData.careerCustom,
         learning_goals: stepData.learningGoals,
-        skills_assessment: stepData.skillsAssessment
+        skills_assessment: stepData.skillsAssessment,
+        interests: stepData.techInterests,
+        updated_at: new Date().toISOString()
       })
+      .eq('user_id', user.id)
 
     if (error) throw error
   }
 
-  const uploadPhoto = async () => {
-    if (!user || !stepData.photo) return null
+  const getPhotoUrl = async () => {
+    if (!user) return null
 
     try {
-      let file: File
-      if (stepData.photo instanceof File) {
-        file = stepData.photo
-      } else {
-        // 如果是base64或URL，转换为File
-        const response = await fetch(stepData.photo)
-        const blob = await response.blob()
-        file = new File([blob], 'photo.jpg', { type: 'image/jpeg' })
+      // 从数据库获取已保存的照片URL
+      const { data, error } = await supabase
+        .from('student_profiles')
+        .select('photo_url')
+        .eq('user_id', user.id)
+        .single()
+
+      if (error) {
+        console.error('获取照片URL失败:', error)
+        return null
       }
 
-      const fileName = `${user.id}/photo_${Date.now()}.jpg`
-      const { data, error } = await supabase.storage
-        .from('avatars')
-        .upload(fileName, file)
-
-      if (error) throw error
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(fileName)
-
-      // 更新用户档案中的照片URL
-      await supabase
-        .from('student_profiles')
-        .update({ photo_url: publicUrl })
-        .eq('user_id', user.id)
-
-      return publicUrl
+      return data?.photo_url || null
     } catch (error) {
-      console.error('照片上传失败:', error)
+      console.error('获取照片URL过程中出错:', error)
       return null
     }
   }
@@ -156,8 +140,15 @@ export function AIProcessingStep() {
 
       // 转换照片为base64（如果有照片）
       let photoBase64 = null
-      if (stepData.photo) {
-        photoBase64 = await fileToBase64(stepData.photo as File)
+      if (photoUrl) {
+        try {
+          const response = await fetch(photoUrl)
+          const blob = await response.blob()
+          const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' })
+          photoBase64 = await fileToBase64(file)
+        } catch (error) {
+          console.error('转换照片失败:', error)
+        }
       }
 
       // 调用AI预测API
