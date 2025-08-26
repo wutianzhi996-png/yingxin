@@ -61,25 +61,25 @@ export function InfoCollectionStep() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
         {/* 标题 */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
             基础信息
           </h2>
-          <p className="text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600">
             请填写姓名、性别并上传你的照片
           </p>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg">
           {/* 照片上传区域 */}
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <label className="block text-sm font-medium text-gray-700 mb-4">
               📸 上传你的照片
             </label>
@@ -93,7 +93,7 @@ export function InfoCollectionStep() {
                       : stepData.photo
                   }
                   alt="用户照片"
-                  className="w-40 h-40 rounded-full object-cover mx-auto border-4 border-blue-200"
+                  className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mx-auto border-4 border-blue-200"
                 />
                 <button
                   onClick={() => updateStepData('photo', undefined)}

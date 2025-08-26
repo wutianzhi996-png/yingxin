@@ -17,16 +17,16 @@ export function WelcomeStep() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto text-center">
+    <div className="max-w-4xl mx-auto text-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
         {/* 主标题 */}
-        <div className="mb-12">
+        <div className="mb-8 sm:mb-12">
           <motion.h1
-            className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4 md:mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -34,7 +34,7 @@ export function WelcomeStep() {
             时光机
           </motion.h1>
           <motion.p
-            className="text-xl text-gray-600"
+            className="text-lg sm:text-xl text-gray-600"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -45,15 +45,15 @@ export function WelcomeStep() {
 
         {/* 体验说明 - 移到中间位置 */}
         <motion.div
-          className="bg-white/50 backdrop-blur-sm rounded-2xl p-8 mb-8 max-w-2xl mx-auto"
+          className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 max-w-2xl mx-auto"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
         >
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
             🎯 5分钟体验未来
           </h3>
-          <div className="text-left space-y-2 text-gray-600 mb-6">
+          <div className="text-left space-y-2 text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">
             <p>📸 上传你的照片</p>
             <p>🎯 选择理想职业</p>
             <p>🧠 完成能力测评</p>
@@ -71,7 +71,7 @@ export function WelcomeStep() {
             <button
               onClick={handleStart}
               disabled={isStarting}
-              className="group relative inline-flex items-center justify-center px-12 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative inline-flex items-center justify-center px-6 sm:px-8 md:px-12 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-base sm:text-lg rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
             >
               {isStarting ? (
                 <div className="flex items-center">
@@ -97,37 +97,37 @@ export function WelcomeStep() {
 
         {/* 特色功能介绍 - 移到下面 */}
         <motion.div
-          className="grid md:grid-cols-3 gap-8 mb-12"
+          className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="w-6 h-6 text-blue-600" />
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-lg">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">AI智能预测</h3>
-            <p className="text-gray-600 text-sm">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">AI智能预测</h3>
+            <p className="text-gray-600 text-xs sm:text-sm">
               基于先进的AI技术，分析你的兴趣特长，预测未来发展轨迹
             </p>
           </div>
 
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Clock className="w-6 h-6 text-purple-600" />
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-lg">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">时光穿越</h3>
-            <p className="text-gray-600 text-sm">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">时光穿越</h3>
+            <p className="text-gray-600 text-xs sm:text-sm">
               穿越到四年后的毕业典礼，十年后的职场巅峰，看见更好的自己
             </p>
           </div>
 
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-            <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Star className="w-6 h-6 text-pink-600" />
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-lg">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <Star className="w-5 h-5 sm:w-6 sm:h-6 text-pink-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">成长路径</h3>
-            <p className="text-gray-600 text-sm">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">成长路径</h3>
+            <p className="text-gray-600 text-xs sm:text-sm">
               获得个性化的学习规划和成长建议，让梦想照进现实
             </p>
           </div>
@@ -135,14 +135,14 @@ export function WelcomeStep() {
 
       </motion.div>
 
-      {/* 装饰性元素 */}
-      <div className="absolute top-10 left-10 w-20 h-20 text-blue-200 opacity-50 animate-pulse">
+      {/* 装饰性元素 - 隐藏在移动端 */}
+      <div className="hidden lg:block absolute top-10 left-10 w-16 h-16 lg:w-20 lg:h-20 text-blue-200 opacity-50 animate-pulse">
         <Sparkles className="w-full h-full" />
       </div>
-      <div className="absolute top-20 right-20 w-16 h-16 text-purple-200 opacity-50 animate-bounce">
+      <div className="hidden lg:block absolute top-20 right-20 w-12 h-12 lg:w-16 lg:h-16 text-purple-200 opacity-50 animate-bounce">
         <Star className="w-full h-full" />
       </div>
-      <div className="absolute bottom-20 left-20 w-12 h-12 text-pink-200 opacity-50 animate-spin">
+      <div className="hidden lg:block absolute bottom-20 left-20 w-10 h-10 lg:w-12 lg:h-12 text-pink-200 opacity-50 animate-spin">
         <Clock className="w-full h-full" />
       </div>
     </div>

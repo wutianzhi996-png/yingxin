@@ -68,43 +68,43 @@ export function ResultsStep() {
 
   if (loading || !prediction) {
     return (
-      <div className="max-w-2xl mx-auto text-center">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+      <div className="max-w-2xl mx-auto text-center px-4">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 mx-auto mb-4"
+            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4"
           >
             <div className="w-full h-full border-4 border-blue-500 border-t-transparent rounded-full" />
           </motion.div>
-          <p className="text-gray-600">正在加载你的未来画像...</p>
+          <p className="text-sm sm:text-base text-gray-600">正在加载你的未来画像...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3 sm:mb-4">
             你的未来画像
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600">
             时光机已经为你描绘了未来的蓝图
           </p>
         </div>
 
         {/* 标签切换 */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white/80 rounded-lg p-1 shadow-lg">
+        <div className="flex justify-center mb-6 sm:mb-8">
+          <div className="bg-white/80 rounded-lg p-1 shadow-lg w-full sm:w-auto">
             <button
               onClick={() => setActiveTab('graduate')}
-              className={`px-6 py-3 rounded-md transition-all ${
+              className={`w-1/2 sm:w-auto px-3 sm:px-6 py-2 sm:py-3 rounded-md transition-all text-sm sm:text-base ${
                 activeTab === 'graduate'
                   ? 'bg-blue-500 text-white shadow-md'
                   : 'text-gray-600 hover:text-blue-600'
@@ -114,7 +114,7 @@ export function ResultsStep() {
             </button>
             <button
               onClick={() => setActiveTab('career')}
-              className={`px-6 py-3 rounded-md transition-all ${
+              className={`w-1/2 sm:w-auto px-3 sm:px-6 py-2 sm:py-3 rounded-md transition-all text-sm sm:text-base ${
                 activeTab === 'career'
                   ? 'bg-purple-500 text-white shadow-md'
                   : 'text-gray-600 hover:text-purple-600'
@@ -131,11 +131,11 @@ export function ResultsStep() {
             key="graduate"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="grid lg:grid-cols-2 gap-8 mb-8"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8"
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-              <h3 className="text-2xl font-semibold mb-4 flex items-center">
-                <Trophy className="w-6 h-6 mr-2 text-yellow-500" />
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-lg">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-3 sm:mb-4 flex items-center">
+                <Trophy className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-yellow-500" />
                 毕业成就预测
               </h3>
               {prediction.graduate_achievements && (
@@ -312,10 +312,10 @@ export function ResultsStep() {
         )}
 
         {/* 操作按钮 */}
-        <div className="flex justify-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
           <button
             onClick={handleShare}
-            className="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="flex items-center justify-center px-4 sm:px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base"
           >
             <Share2 className="w-4 h-4 mr-2" />
             分享结果
@@ -323,7 +323,7 @@ export function ResultsStep() {
           
           <button
             onClick={handleDownload}
-            className="flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            className="flex items-center justify-center px-4 sm:px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm sm:text-base"
           >
             <Download className="w-4 h-4 mr-2" />
             下载画像
@@ -331,7 +331,7 @@ export function ResultsStep() {
           
           <button
             onClick={handleRestart}
-            className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="flex items-center justify-center px-4 sm:px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
           >
             <RotateCcw className="w-4 h-4 mr-2" />
             重新体验
